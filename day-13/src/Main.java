@@ -1,7 +1,6 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.lang.System.out;
 
@@ -142,8 +141,33 @@ public class Main {
             return compare(pair);
         }
 
+        if (isClose(rChr) && !isClose(lChr)) {
+            pair.right.pop();
+            popUntilClose(pair.left);
+            return compare(pair);
+        }
+
+        if (!isClose(rChr) && isClose(lChr)) {
+            pair.left.pop();
+            popUntilClose(pair.right);
+            return compare(pair);
+        }
+
         pair.pop();
         return compare(pair);
+    }
+
+    private void popUntilClose(Deque<String> deck) {
+        String top = deck.peek();
+        while (!isClose(top)) {
+            deck.pop();
+
+            if (deck.isEmpty()) {
+                break;
+            }
+
+            top = deck.peek();
+        }
     }
 
     private boolean isOpen(String c) {
